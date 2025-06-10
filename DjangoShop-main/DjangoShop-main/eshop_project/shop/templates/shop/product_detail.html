@@ -1,0 +1,30 @@
+{% extends "shop/base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="row animate__animated animate__fadeIn">
+    <div class="col-md-6">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" class="img-fluid rounded mb-3 shadow" alt="{{ product.name }}">
+        {% else %}
+        <img src="https://via.placeholder.com/600x400?text=No+Image" class="img-fluid rounded mb-3 shadow" alt="Bez obrázku">
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <h1>{{ product.name }}</h1>
+        <h4 class="text-muted">{{ product.category.name }}</h4>
+        <p>{{ product.description|default:"Bez popisu" }}</p>
+        <p><strong>Cena:</strong> {{ product.price }} Kč</p>
+        <p><strong>Sklad:</strong> {{ product.stock }}</p>
+
+        <div class="d-flex gap-2 mt-3">
+            <a href="{% url 'shop:products' %}" class="btn btn-secondary">Zpět na produkty</a>
+
+            <form method="post" action="{% url 'shop:add_to_cart' product.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning">Přidat do košíku 🛒</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

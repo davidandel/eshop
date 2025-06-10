@@ -1,0 +1,38 @@
+{% extends "shop/base.html" %}
+{% block title %}Kontakt{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 animate__animated animate__fadeInDown">Kontakt</h1>
+<p class="mb-4">Máte dotaz? Neváhejte nás kontaktovat!</p>
+
+<div class="row">
+    <div class="col-md-6 animate__animated animate__fadeInLeft">
+        <form method="post" action="#">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="name" class="form-label">Jméno</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Vaše jméno" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Váš email" required>
+            </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Zpráva</label>
+                <textarea class="form-control" id="message" name="message" rows="5" placeholder="Vaše zpráva" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Odeslat</button>
+        </form>
+    </div>
+    <div class="col-md-6 animate__animated animate__fadeInRight">
+        <h5>Kontaktní údaje</h5>
+        <p><strong>Adresa:</strong> Ulice 123, Město, Česká republika</p>
+        <p><strong>Telefon:</strong> +420 123 456 789</p>
+        <p><strong>Email:</strong> <a href="mailto:info@mojeshop.cz">info@mojeshop.cz</a></p>
+        <h5>Otevírací doba</h5>
+        <p>Pondělí - Pátek: 9:00 - 18:00</p>
+        <p>Sobota: 10:00 - 14:00</p>
+        <p>Neděle: Zavřeno</p>
+    </div>
+</div>
+{% endblock %}

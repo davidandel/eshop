@@ -1,0 +1,54 @@
+{% extends "shop/base.html" %}
+{% block title %}Kategorie: {{ category.name }}{% endblock %}
+{% block content %}
+<h1 class="mb-4">Kategorie: {{ category.name }}</h1>
+<p>{{ category.description|default:"Bez popisu" }}</p>
+
+<h3>Produkty v kategorii</h3>
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-3 mb-4">
+        <div class="card shadow-sm h-100">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+            {% else %}
+            <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="Bez obrázku">
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text flex-grow-1">{{ product.description|truncatewords:15|default:"Bez popisu" }}</p>
+                <p class="card-text"><strong>Cena:</strong> {{ product.price }} Kč</p>
+                <a href="{% url 'shop:product_detail' product.pk %}" class="btn btn-primary mt-auto">Detail</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>V této kategorii nejsou žádné produkty.</p>
+    {% endfor %}
+</div>
+<a href="{% url 'shop:categories' %}" class="btn btn-secondary mt-3">Zpět na kategorie</a>
+
+
+
+    <div class="col-md-3 mb-4 animate__animated animate__fadeInUp" style="animation-delay: {{ forloop.counter0|add:"0.1"|floatformat:1 }}s;">
+    <div class="card shadow-sm h-100">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+        {% else %}
+        <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="Bez obrázku">
+        {% endif %}
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ product.category.name }}</h6>
+            <p class="card-text flex-grow-1">{{ product.description|truncatewords:15|default:"Bez popisu" }}</p>
+            <p class="card-text"><strong>Cena:</strong> {{ product.price }} Kč</p>
+            <a href="{% url 'shop:product_detail' product.pk %}" class="btn btn-primary mb-2 mt-auto">Detail</a>
+            <form method="post" action="{% url 'shop:add_to_cart' product.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning w-100">Přidat do košíku 🛒</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

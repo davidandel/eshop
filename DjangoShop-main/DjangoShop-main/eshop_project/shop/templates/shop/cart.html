@@ -1,0 +1,43 @@
+{% extends "shop/base.html" %}
+{% block title %}Můj košík{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Můj košík 🛒</h1>
+{% if cart_products %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Produkt</th>
+            <th>Množství</th>
+            <th>Cena za kus</th>
+            <th>Mezisoučet</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart_products %}
+        <tr>
+            <td>
+                {{ item.product.name }}
+                <br>
+                <small class="text-muted">{{ item.product.category.name }}</small>
+            </td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.product.price }} Kč</td>
+            <td>{{ item.subtotal }} Kč</td>
+            <td>
+                <form method="post" action="{% url 'shop:remove_from_cart' item.product.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger">Odebrat</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h3 class="text-end">Celkem: {{ total }} Kč</h3>
+{% else %}
+<p>Váš košík je prázdný.</p>
+{% endif %}
+<a href="{% url 'shop:products' %}" class="btn btn-secondary mt-3">Pokračovat v nákupu</a>
+{% endblock %}

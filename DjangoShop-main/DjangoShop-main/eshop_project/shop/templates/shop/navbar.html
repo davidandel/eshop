@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold animate__animated animate__fadeInDown" href="{% url 'shop:home' %}">Můj Eshop</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'shop:home' %}">Domů</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.path|slice:":9" == "/kategorie" %}active{% endif %}" href="{% url 'shop:categories' %}">Kategorie</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.path|slice:":8" == "/produkty" %}active{% endif %}" href="{% url 'shop:products' %}">Produkty</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/kontakt/' %}active{% endif %}" href="{% url 'shop:contact' %}">Kontakt</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/kosik/' %}active{% endif %}" href="{% url 'shop:cart' %}">
+            Můj košík 🛒
+            {% with request.session.cart|length as cart_count %}
+              {% if cart_count > 0 %}
+                <span class="badge bg-warning text-dark">{{ cart_count }}</span>
+              {% endif %}
+            {% endwith %}
+          </a>
+        </li>
+      </ul>
+      <form class="d-flex me-3" role="search" method="get" action="{% url 'shop:products' %}">
+        <input class="form-control me-2" type="search" placeholder="Hledat produkt..." aria-label="Search" name="q" value="{{ request.GET.q|default:'' }}">
+        <button class="btn btn-outline-light" type="submit">Hledat</button>
+      </form>
+      <button class="btn btn-outline-light" id="theme-toggle-btn" type="button" aria-label="Přepnout téma">
+        🌙 Tmavý režim
+      </button>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,22 @@
+{% extends "shop/base.html" %}
+{% block title %}Kategorie{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Kategorie</h1>
+<div class="row">
+    {% for category in categories %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'shop:category_detail' category.pk %}">{{ category.name }}</a>
+                </h5>
+                <p class="card-text">{{ category.description|default:"Bez popisu" }}</p>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>Žádné kategorie k zobrazení.</p>
+    {% endfor %}
+</div>
+{% endblock %}

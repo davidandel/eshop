@@ -1,0 +1,79 @@
+{% extends "shop/base.html" %}
+{% block title %}Můj Eshop – Domů{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 animate__animated animate__fadeInDown">Vítejte v našem eshopu!</h1>
+
+<h3 class="mb-3">Kategorie</h3>
+<div class="row">
+    {% for category in categories %}
+    <div class="col-md-4 mb-4 animate__animated animate__fadeInUp" style="animation-delay: {{ forloop.counter0|add:"0.1"|floatformat:1 }}s;">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ category.name }}</h5>
+                <p class="card-text">{{ category.description|default:"Bez popisu" }}</p>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>Žádné kategorie k zobrazení.</p>
+    {% endfor %}
+</div>
+
+<h3 class="mb-3 mt-5">Nejnovější produkty</h3>
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-3 mb-4 animate__animated animate__zoomIn" style="animation-delay: {{ forloop.counter0|add:"0.1"|floatformat:1 }}s;">
+        <div class="card h-100 shadow-sm">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+            {% else %}
+            <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="Bez obrázku">
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ product.category.name }}</h6>
+                <p class="card-text flex-grow-1">{{ product.description|truncatewords:15|default:"Bez popisu" }}</p>
+                <p class="card-text"><strong>Cena:</strong> {{ product.price }} Kč</p>
+                <a href="{% url 'shop:product_detail' product.pk %}" class="btn btn-primary mt-auto">Detail</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>Žádné produkty k zobrazení.</p>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% for product in products %}
+  <div class="col-md-3 mb-4">
+    <div class="card shadow-sm h-100">
+      {% if product.image %}
+        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+      {% else %}
+        <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="Bez obrázku">
+      {% endif %}
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ product.category.name }}</h6>
+        <p class="card-text flex-grow-1">{{ product.description|truncatewords:15|default:"Bez popisu" }}</p>
+        <p class="card-text"><strong>Cena:</strong> {{ product.price }} Kč</p>
+
+        {% if product.pk %}
+          <a href="{% url 'shop:product_detail' product.pk %}" class="btn btn-primary mb-2 mt-auto">Detail</a>
+        {% else %}
+          <button class="btn btn-secondary mb-2 mt-auto" disabled>Detail nedostupný</button>
+        {% endif %}
+
+        <form method="post" action="{% url 'shop:add_to_cart' product.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-warning w-100">Přidat do košíku 🛒</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+
+
+
